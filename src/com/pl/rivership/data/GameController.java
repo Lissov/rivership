@@ -8,36 +8,13 @@ public class GameController
 {
 	public Game game;
 	private MoveCalculator moveCalc;
+	
+	public DebugInfo debugInfo = new DebugInfo();
 
 	public GameController(Game game)
 	{
 		this.game = game;
 		this.moveCalc = new MoveCalculator();
-		
-		this.game.items.add(
-			new WhiteDot(
-				new Movement(
-					game.cameraPoint.x+1,
-					game.cameraPoint.y,
-					0))
-		);
-
-		this.game.items.add(
-			new Stick(
-				new Movement(
-					game.cameraPoint.x,
-					game.cameraPoint.y,
-					0),
-				0.5f)
-				);
-		this.game.items.add(
-			new Ship(
-				new Movement(
-					game.cameraPoint.x + 10f,
-					game.cameraPoint.y + 5f,
-					0f),
-				100000f)
-		);
 	}
 	
 	private long lastUpdated = 0;
@@ -54,8 +31,11 @@ public class GameController
 			return;  // lag - ignore
 		
 		float td = (float)diff / 1000f;
+		debugInfo.updateInterval.put(td);
 		
+		long n2 = new Date().getTime();
 		updatePositions(td);
+		debugInfo.modelCalcTime.put((float)(new Date().getTime() - n2) / 1000f);
 		updateCamera(td);
 	}
 	
@@ -67,6 +47,8 @@ public class GameController
 	
 	private void updateCamera(float td) {
 		// to implement
+		game.cameraPoint.x = game.ship.position.x;
+		game.cameraPoint.y = game.ship.position.y;
 	}
 	
 	private long lastPointsAdd = 0;

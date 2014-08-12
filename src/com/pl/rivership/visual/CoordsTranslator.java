@@ -1,6 +1,7 @@
 package com.pl.rivership.visual;
 import com.pl.rivership.data.physics.*;
 import android.graphics.*;
+import com.pl.rivership.data.model.items.*;
 
 public class CoordsTranslator
 {
@@ -46,4 +47,26 @@ public class CoordsTranslator
 		
 		return r / scale;
 	}
+	
+	//relative to item
+	private Item relItem;
+	float relCx;
+	float relCy;
+	float relSin;
+	float relCos;
+	public void setMasterItem(Item item){
+		relItem = item;
+		PointF c = toScreen(item.position.x, item.position.y);
+		relCx = c.x;
+		relCy = c.y;
+		relCos = (float)Math.cos(camera.rotation + item.position.rotation);
+		relSin = (float)Math.sin(camera.rotation + item.position.rotation);
+	}
+	
+	public PointF toScreenRel(float x, float y){
+		_cached.x = relCx + (x * relCos - y * relSin) * scale;
+		_cached.y = relCy - (x * relSin + y * relCos) * scale;
+		return _cached;
+	}
+	
 }

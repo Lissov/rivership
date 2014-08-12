@@ -8,6 +8,7 @@ import java.util.*;
 import com.pl.rivership.data.model.items.*;
 import com.pl.rivership.visual.item.*;
 import android.content.*;
+import com.pl.rivership.data.physics.*;
 
 public class GameView extends View
 {
@@ -43,7 +44,7 @@ public class GameView extends View
 					}
 				});
 			}
-		}, 1000, 40);
+		}, 1000, 20);
 	}
 
 	private void update(){
@@ -69,6 +70,24 @@ public class GameView extends View
 		
 		for (Item item : gameContr.game.items){
 			itemsDrawer.draw(canvas, item, trans);
+		}
+		
+		drawDebugInfo(canvas);
+	}
+	
+	private void drawDebugInfo(Canvas canvas){
+		Paint debugP = new Paint();
+		debugP.setColor(Color.WHITE);
+		debugP.setTextSize(16);
+		canvas.drawText("Update interval: " + gameContr.debugInfo.updateInterval.get(), 5,15, debugP);
+		canvas.drawText("Model calc time: " + gameContr.debugInfo.modelCalcTime.get(), 5,30, debugP);
+		
+		if (gameContr.game != null && gameContr.game.ship != null && gameContr.game.ship.debugForce != null)
+		{ 
+			canvas.drawText("Force X: " + gameContr.game.ship.debugForce.x, 5,45, debugP);
+			canvas.drawText("Force Y: " + gameContr.game.ship.debugForce.y, 5,60, debugP);
+			Movement m = gameContr.game.ship.movement;
+			canvas.drawText("Speed: " + Math.sqrt(m.x*m.x + m.y*m.y), 5, 75, debugP);
 		}
 	}
 }

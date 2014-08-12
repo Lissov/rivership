@@ -11,33 +11,79 @@ public class ShipDrawer extends ItemDrawerBase<Ship>
 	}
 
 	public void draw(Canvas canvas, Ship item, CoordsTranslator trans){
+		
+		trans.setMasterItem(item);
+		Paint rudderP = new Paint();
+		rudderP.setColor(Color.BLACK);
+		PointF rS = trans.toScreenRel(0, -Ship.ShipLength2);
+		float rsx = rS.x;
+		float rsy = rS.y;
+		PointF rE = trans.toScreenRel(
+			0 + 2f*(float)Math.sin(item.rudderAngle),
+			-Ship.ShipLength2 - 2f*(float)Math.cos(item.rudderAngle));
+		canvas.drawLine(rsx, rsy, rE.x, rE.y, rudderP);
+		
 		Paint p = new Paint();
 		p.setColor(Color.GREEN);
 		p.setStyle(Paint.Style.FILL_AND_STROKE);
 		
-		/*PointF pnt = trans.toScreen(item.position.x - 5, item.position.y - 20);
-		float l = pnt.x;
-		float t = pnt.y;
-		pnt = trans.toScreen(item.position.x + 5, item.position.y + 20);
-		float r = pnt.x;
-		float b = pnt.y;
-		canvas.drawRect(l, t, r, b, p);
+		drawTriangleC(canvas, p, trans, item,
+					  -Ship.ShipWidth2, -Ship.ShipLength2,
+					  -Ship.ShipWidth2, Ship.ShipLength2,
+					  Ship.ShipWidth2, -Ship.ShipLength2);
+		drawTriangleC(canvas, p, trans, item,
+					  -Ship.ShipWidth2, Ship.ShipLength2,
+					  Ship.ShipWidth2, Ship.ShipLength2,
+					  Ship.ShipWidth2, -Ship.ShipLength2);
+		drawTriangleC(canvas, p, trans, item,
+					  -Ship.ShipWidth2, Ship.ShipLength2,
+					  0, Ship.ShipLength2 + Ship.ShipWidth2,
+					  Ship.ShipWidth2, Ship.ShipLength2);
+					  
+		drawDebugForce(canvas, item, trans); 
+	}
+	
+	public void drawDebugForce(Canvas canvas, Ship item, CoordsTranslator trans)
+	{
+		if (item.debugForce == null)
+			return;
 		
-		drawTriangle(canvas, p, trans,
-					 item.position.x - 5, item.position.y + 20,
-					 item.position.x    , item.position.y + 25,
-					 item.position.x + 5, item.position.y + 20);*/
+		Paint p = new Paint();
+		p.setColor(Color.RED);
+		//p.setStyle(Paint.Style.FILL_AND_STROKE);
+		
+		PointF p0 = trans.toScreen(item.position);
+		float xc = p0.x;
+		float yc = p0.y;
+		canvas.drawCircle(xc, yc, 2, p);
+		PointF p1 = trans.toScreen(
+			item.position.x + item.debugForce.x * 10f / item.mass, 
+			item.position.y + item.debugForce.y * 10f / item.mass);
+		canvas.drawLine(xc, yc, p1.x, p1.y, p);
+		
+		Paint moveP = new Paint();
+		moveP.setColor(Color.WHITE);
+		PointF pM = trans.toScreen(
+			item.position.x + item.movement.x, 
+			item.position.y + item.movement.y);
+		canvas.drawLine(xc, yc, pM.x, pM.y, moveP);
+		
+		
+		
+		
+		float fr = item.debugForce.rotation * 100f / item.momentI;
 		drawTriangleC(canvas, p, trans, item,
-					  -5, -20,
-					  -5, 20,
-					  5, -20);
-		drawTriangleC(canvas, p, trans, item,
-					  -5, 20,
-					  5, 20,
-					  5, -20);
-		drawTriangleC(canvas, p, trans, item,
-					 -5, 20,
-					 0, 25,
-					 5, 20);
+			0, Ship.ShipLength2 + Ship.ShipWidth2 + 0.2f,
+			-fr, Ship.ShipLength2 + Ship.ShipWidth2,
+			0, Ship.ShipLength2 + Ship.ShipWidth2 - 0.2f);
+
+		float rx = -fr;
+		float ry = Ship.ShipLength2 + Ship.ShipWidth2;
+		float rsin = (float)Math.sin(item.position.rotation);
+		float rcos = (float)Math.cos(item.position.rotation);
+		PointF pr = trans.toScreen(
+			item.position.x + rx * rcos - ry * rsin,
+			item.position.y + rx * rsin + ry * rcos);
+		canvas.drawCircle(pr.x, pr.y, 2, p);
 	}
 }

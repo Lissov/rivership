@@ -53,5 +53,6 @@ public abstract class ItemDrawerBase<TItem>
 					item.position.x + x3 * cos - y3 * sin,
 					item.position.y + x3 * sin + y3 * cos
 	   	);
-	}	
+	}
+	
 }

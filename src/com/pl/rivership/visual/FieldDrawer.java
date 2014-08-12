@@ -17,11 +17,11 @@ public class FieldDrawer
 	
 	public void draw(Canvas canvas, River river, CoordsTranslator trans){
 		
-		float vr = trans.getVisionRadius() / 5;
+		float vr = trans.getVisionRadius() / 2;
 		RiverTile tile = river.getCurrentTile();
 			
-		for (int x = (int)(trans.camera.x - vr); x < (int)(trans.camera.x + vr); x++){
-			for (int y = (int)(trans.camera.y - vr); y < (int)(trans.camera.y + vr); y++){
+		for (int x = (int)(trans.camera.x - vr); x < (int)(trans.camera.x + vr); x+=3){
+			for (int y = (int)(trans.camera.y - vr); y < (int)(trans.camera.y + vr); y+=3){
 				int xt = x - (int)tile.southwestCorner.x;
 				int yt = y - (int)tile.southwestCorner.y;
 				if (xt < 0 || xt >= RiverHolder.TileSize

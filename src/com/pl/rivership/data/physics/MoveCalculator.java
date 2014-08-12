@@ -18,6 +18,10 @@ public class MoveCalculator
 			item.movement.y += f.y * inert;
 		}
 		item.movement.rotation += f.rotation * inertR;
+		
+		//item.movement.x = 0;
+		//item.movement.y = 5;
+		//item.movement.rotation = 0;
 
 		item.position.x += item.movement.x * deltaT;
 		item.position.y += item.movement.y * deltaT;

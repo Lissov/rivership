@@ -8,6 +8,7 @@ public class Game
 {
 	public River river;
 	public List<Item> items;
+	public Ship ship;
 	
 	public Movement cameraPoint;
 

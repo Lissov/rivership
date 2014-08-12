@@ -18,8 +18,8 @@ public class RiverHolder
 		res.tiles[0].southwestCorner = new PointF(-TileSize/2, -200);
 		for (int x = 0; x < TileSize; x++){
 			for (int y = 0; y < TileSize; y++){
-				res.tiles[0].flowX[x][y] = 0 + 0.1f * (float)r.nextGaussian();
-				res.tiles[0].flowY[x][y] = -1 + 0.3f * (float)r.nextGaussian();
+				res.tiles[0].flowX[x][y] = 0;//0f + 0.1f * (float)r.nextGaussian();
+				res.tiles[0].flowY[x][y] = 0;//-1f + 0.3f * (float)r.nextGaussian();
 			}
 		}
 		
