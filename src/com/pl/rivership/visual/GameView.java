@@ -9,6 +9,8 @@ import com.pl.rivership.data.model.items.*;
 import com.pl.rivership.visual.item.*;
 import android.content.*;
 import com.pl.rivership.data.physics.*;
+import android.widget.*;
+import javax.crypto.*;
 
 public class GameView extends View
 {
@@ -19,6 +21,7 @@ public class GameView extends View
 	CoordsTranslator trans = new CoordsTranslator();
 	ItemsDrawer itemsDrawer;
 	FieldDrawer fieldDrawer;
+	ControlsDrawer controlsDrawer;
 	
 	public GameView(final Activity activity){
 		super(activity);
@@ -30,6 +33,7 @@ public class GameView extends View
 		gameContr = new GameController(GameHolder.getCurrentGame());
 		itemsDrawer = new ItemsDrawer(context);
 		fieldDrawer = new FieldDrawer(context);
+		controlsDrawer = new ControlsDrawer(context);
 				
 		if (updateTimer == null)
 			updateTimer = new Timer("updateTimer");
@@ -47,12 +51,21 @@ public class GameView extends View
 		}, 1000, 20);
 	}
 
+	private long lut = 0;
 	private void update(){
+		if (lut != 0){
+			updateRudder((float)(new Date().getTime() - lut) / 1000f);
+		}
+		lut = new Date().getTime();
+		
+		
 		gameContr.update();
 		float vr = trans.getVisionRadius();
 		//gameContr.addRemoveItems(vr, 2 * vr);
 		this.invalidate();
 	}
+	
+	private float requestedRudderPos = 0f;
 	
 	private int width;
 	private int heigth;
@@ -72,6 +85,8 @@ public class GameView extends View
 			itemsDrawer.draw(canvas, item, trans);
 		}
 		
+		controlsDrawer.draw(canvas, gameContr.game.ship, width, heigth);
+		
 		drawDebugInfo(canvas);
 	}
 	
@@ -88,6 +103,49 @@ public class GameView extends View
 			canvas.drawText("Force Y: " + gameContr.game.ship.debugForce.y, 5,60, debugP);
 			Movement m = gameContr.game.ship.movement;
 			canvas.drawText("Speed: " + Math.sqrt(m.x*m.x + m.y*m.y), 5, 75, debugP);
+			canvas.drawText("Pos Rotation: " + gameContr.game.ship.position.rotation, 5,90, debugP);
 		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP){
+			gameContr.game.ship.setThrustPosition(gameContr.game.ship.thrustPosition + 1);
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN){
+			gameContr.game.ship.setThrustPosition(gameContr.game.ship.thrustPosition - 1);
+			return true;
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT){
+			requestedRudderPos += 0.1f;
+			if (requestedRudderPos > Ship.MaxRudderAngle) requestedRudderPos = Ship.MaxRudderAngle;
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT){
+			requestedRudderPos -= 0.1f;
+			if (requestedRudderPos < -Ship.MaxRudderAngle) requestedRudderPos = -Ship.MaxRudderAngle;
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+
+	
+	private void updateRudder(float dt){
+		gameContr.game.ship.setRudderPosition(
+			gameContr.game.ship.rudderPosition + 0.8f*dt*(requestedRudderPos - gameContr.game.ship.rudderPosition)
+		);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		if (event.getPointerCount() != 1)
+			Toast.makeText(context, "" + event.getPointerCount(), Toast.LENGTH_SHORT).show();
+		// TODO: Implement this method
+		return super.onTouchEvent(event);
 	}
 }

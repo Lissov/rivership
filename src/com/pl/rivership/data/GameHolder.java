@@ -31,8 +31,8 @@ public class GameHolder
 		);
 		s.movement.y = 0;
 		s.movement.x = 0;
-		s.rudderAngle = 1f;
-		s.enginePower = 0.5f;
+		s.rudderAngle = 0f;
+		s.thrustPosition = 3;
 
 		game.items.add(s);
 		game.ship = s;

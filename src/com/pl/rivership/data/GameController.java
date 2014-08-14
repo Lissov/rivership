@@ -40,6 +40,7 @@ public class GameController
 	}
 	
 	private void updatePositions(float td) {
+		game.ship.updateControls(td);
 		for (Item item : game.items){
 			moveCalc.calculate(item, game.river, td);
 		}
@@ -47,11 +48,11 @@ public class GameController
 	
 	private void updateCamera(float td) {
 		// to implement
-		game.cameraPoint.x = game.ship.position.x;
-		game.cameraPoint.y = game.ship.position.y;
+		//game.cameraPoint.x = game.ship.position.x;
+		//game.cameraPoint.y = game.ship.position.y;
 	}
 	
-	private long lastPointsAdd = 0;
+	//private long lastPointsAdd = 0;
 	public void addRemoveItems(float visibilityR, float removeR) {
 		long now = new Date().getTime();
 		long diff = now - lastUpdated;

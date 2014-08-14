@@ -3,6 +3,7 @@ import android.app.*;
 import android.os.*;
 import android.widget.*;
 import com.pl.rivership.visual.*;
+import android.view.*;
 
 public class GameActivity extends Activity
 {
@@ -19,4 +20,15 @@ public class GameActivity extends Activity
 		LinearLayout llMain = (LinearLayout)findViewById(R.id.game_llMain);
 		llMain.addView(gameView);
 	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		boolean handled = gameView.onKeyDown(keyCode, event);
+		if (!handled)
+			return super.onKeyDown(keyCode, event);
+		else
+			return true;
+	}
+	
 }

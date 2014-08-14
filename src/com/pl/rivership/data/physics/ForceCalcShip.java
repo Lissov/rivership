@@ -71,9 +71,9 @@ public class ForceCalcShip extends ForceCalcBase<Ship>
 		// causes no rotation
 		
 		//rudder from engine
-		/*float engWaterSpeed = item.enginePower * Ship.MaxPowerFlow;
+		float engWaterSpeed = item.enginePower * Ship.MaxPowerFlow;
 		Movement engFlow = new Movement(
-			engWaterSpeed * sinr, engWaterSpeed * cosr,
+			engWaterSpeed * sinr, -engWaterSpeed * cosr,
 			0);
 		addForceDiffFlow(_force, river, 0, -Ship.ShipLength2,
 					     rudderNx, rudderNy, 
@@ -83,7 +83,7 @@ public class ForceCalcShip extends ForceCalcBase<Ship>
 						 -rudderNx, -rudderNy, 
 						 Ship.RudderEnginedSquare, item, sinr, cosr,
 						 engFlow);
-		*/
+		
 						 
 		// debug info
 		item.debugForce = _force;

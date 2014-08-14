@@ -14,14 +14,25 @@ public class ShipDrawer extends ItemDrawerBase<Ship>
 		
 		trans.setMasterItem(item);
 		Paint rudderP = new Paint();
+		float rudderT = 0.4f;
 		rudderP.setColor(Color.BLACK);
 		PointF rS = trans.toScreenRel(0, -Ship.ShipLength2);
 		float rsx = rS.x;
 		float rsy = rS.y;
-		PointF rE = trans.toScreenRel(
+		/*PointF rE = trans.toScreenRel(
 			0 + 2f*(float)Math.sin(item.rudderAngle),
-			-Ship.ShipLength2 - 2f*(float)Math.cos(item.rudderAngle));
-		canvas.drawLine(rsx, rsy, rE.x, rE.y, rudderP);
+			-Ship.ShipLength2 - 2f*(float)Math.cos(item.rudderAngle));*/
+		//float rex = rE.x;
+		//float rey = rE.y;
+		float rs1x = rudderT*(float)Math.cos(item.rudderAngle);
+		float rs1y = -Ship.ShipLength2 + rudderT*(float)Math.sin(item.rudderAngle);
+		float rs2x = -rs1x;
+		float rs2y = -2 * Ship.ShipLength2 - rs1y;
+		canvas.drawCircle(rsx, rsy, rudderT*trans.scale, rudderP);
+		drawTriangleC(canvas, rudderP, trans, item, rs1x, rs1y, rs2x, rs2y, 
+					 0 + 2f*(float)Math.sin(item.rudderAngle),
+					 -Ship.ShipLength2 - 2f*(float)Math.cos(item.rudderAngle));
+		//canvas.drawLine(rsx, rsy, rE.x, rE.y, rudderP);
 		
 		Paint p = new Paint();
 		p.setColor(Color.GREEN);

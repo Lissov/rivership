@@ -11,7 +11,7 @@ public class CoordsTranslator
 	float screenH;
 	float csX;
 	float csY;
-	float scale;
+	public float scale;
 	Movement camera;
 	public void setup(float screenW, float screenH, Movement camera){
 		this.screenW = screenW;

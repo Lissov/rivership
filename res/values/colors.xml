@@ -7,4 +7,15 @@
     <color name="stick">#A0522D</color>
     <color name="whiteDot">#EEEEEE</color>
 	
+    <color name="rudder_inner">#623201</color>
+    <color name="rudder_outer">#825201</color>
+    <color name="rudder_stick">#C47B02</color>
+    <color name="rudder_handle">#FFA402</color>
+    <color name="rudder_handleA">#FFD700</color>
+	
+    <color name="rudder_g_border">#444444</color>
+    <color name="rudder_g_field">#EEEEEE</color>
+	<color name="rudder_g_mark">#000000</color>
+	<color name="rudder_g_dial">#FF2222</color>
+	
 </resources>
